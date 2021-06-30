@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>캔버스에 파이 차트 그리기</title>
+	<style>
+	</style>
+</head>
+<body>
+	<h3>학점 별로 학생 수를 입력하면 파이 차트로 비율 그리기</h3>
+	<hr>
+	<div>
+		A <input type="number" id="A" value="0"> 명 B <input type="number" id="B" value="0"> 명 C <input type="number" id="C" value="0"> 명<br>
+		D <input type="number" id="D" value="0"> 명 F <input type="number" id="F" value="0"> 명 <input type=button value="차트그리기" onClick="drawChart()">
+	</div>
+	<canvas id="chart" style="background-color:aliceblue" width="600" height="500"></canvas>
+	<script>
+		var colors=["blue", "green", "yellow", "magenta", "red"];
+		var grades=["A", "B", "C", "D", "F"];
+		var canvas=document.getElementById("chart");
+		var context=canvas.getContext("2d");
+
+		function drawChart(){
+			context.clearRect(0,0,canvas.width,canvas.height);
+			var n=[0,0,0,0,0];
+			var sum=0;
+			var start=0;
+			for(var i=0;i<5;++i){
+				n[i]=document.getElementById(grades[i]).value;
+				sum+=n[i]*1;
+			}
+			for(var i=0;i<5;++i){
+				context.font="15px arial";
+				context.fillStyle="blue";
+				context.lineWidth=1;
+				context.fillText(grades[i]+" 학점"+Math.floor(n[i]/sum*100)+"% : "+colors[i],0,15*(i+1));
+				context.beginPath();
+				context.moveTo(300,170);
+				context.arc(300,170,150,start*Math.PI,(n[i]/sum*2+start)*Math.PI);
+				start+=n[i]/sum*2;
+				context.closePath();
+				context.fillStyle=colors[i];
+				context.fill();
+			}
+		}
+	</script>
+</body>
